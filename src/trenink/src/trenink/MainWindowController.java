@@ -21,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import model.Exercise;
+import model.Weight;
 import model.Workout;
 
 /**
@@ -36,6 +37,9 @@ public class MainWindowController implements Initializable {
     
     @FXML public TableView<Exercise> exercisesTable;
     @FXML public TableColumn<Exercise, String> exerciseColumn;
+    @FXML public TableColumn<Exercise, String> seriesColumn;
+    @FXML public TableColumn<Exercise, String> repetitionsColumn;
+    @FXML public TableColumn<Exercise, String> weightColumn;
     
     private Workout getSelectedWorkout() {
         return workoutsTable.getSelectionModel().getSelectedItem();
@@ -61,7 +65,12 @@ public class MainWindowController implements Initializable {
         workoutsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             refreshWorkoutForm();
         });
+        
         exercisesTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        exerciseColumn.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getExerciseType().getName()));
+        seriesColumn.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getSeries().toString()));
+        repetitionsColumn.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getRepetitions().toString()));
+        weightColumn.setCellValueFactory(data -> new ReadOnlyStringWrapper(Weight.formatWeight(data.getValue().getWeight())));
     }   
     
     private WorkoutLoader loader;

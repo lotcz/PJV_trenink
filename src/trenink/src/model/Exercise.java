@@ -64,10 +64,10 @@ public class Exercise implements Serializable {
         this.weight = s;
     }
     
-    private ExerciseType exerciseType;
-    
     @ManyToOne
     @JoinColumn(name = "type")
+    private ExerciseType exerciseType;
+       
     public ExerciseType getExerciseType() {
         return this.exerciseType;
     }
@@ -76,10 +76,10 @@ public class Exercise implements Serializable {
         this.exerciseType = et;
     }
     
-    private Workout workout;
-    
     @ManyToOne
     @JoinColumn(name = "workout")
+    private Workout workout;
+        
     public Workout getWorkout() {
         return this.workout;
     }

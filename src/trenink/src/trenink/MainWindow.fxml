@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -8,6 +9,8 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trenink.MainWindowController">
    <top>
@@ -38,26 +41,46 @@
       </MenuBar>
    </top>
    <left>
-      <TableView id="workoutsTable" fx:id="workoutsTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-        <columns>
-          <TableColumn fx:id="dateColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="199.0" resizable="false" sortType="DESCENDING" text="Datum tréninku" />
-        </columns>
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="200.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </BorderPane.margin>
-      </TableView>
+         <children>
+            <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" text="Button" />
+                  <Button mnemonicParsing="false" text="Button" />
+               </children>
+            </HBox>
+            <TableView id="workoutsTable" fx:id="workoutsTable" prefWidth="200.0">
+              <columns>
+                <TableColumn fx:id="dateColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="199.0" resizable="false" sortType="DESCENDING" text="Datum tréninku" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
    </left>
    <center>
-      <TableView fx:id="exercisesTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-        <columns>
-          <TableColumn minWidth="-1.0" prefWidth="150.0" text="Cvik" />
-          <TableColumn prefWidth="75.0" text="Série" />
-            <TableColumn prefWidth="75.0" text="Opakování" />
-            <TableColumn prefWidth="75.0" text="Váha" />
-        </columns>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" text="Button" />
+                  <Button mnemonicParsing="false" text="Button" />
+               </children>
+            </HBox>
+            <TableView fx:id="exercisesTable" prefWidth="200.0">
+              <columns>
+                <TableColumn fx:id="exerciseColumn" minWidth="-1.0" prefWidth="150.0" text="Cvik" />
+                <TableColumn fx:id="seriesColumn" prefWidth="75.0" text="Série" />
+                  <TableColumn fx:id="repetitionsColumn" prefWidth="75.0" text="Opakování" />
+                  <TableColumn fx:id="weightColumn" prefWidth="75.0" text="Váha" />
+              </columns>
+            </TableView>
+         </children>
          <BorderPane.margin>
-            <Insets bottom="5.0" right="5.0" top="5.0" />
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </BorderPane.margin>
-      </TableView>
+      </VBox>
    </center>
 </BorderPane>

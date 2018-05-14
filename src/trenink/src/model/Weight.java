@@ -37,8 +37,12 @@ public class Weight implements Serializable {
         return numberFormat;
     }
    
-    public String getWeightFormatted() {
+    public static String formatWeight(Float weight) {
         return String.format("%s kg", getNumberFormat().format(weight));
+    }
+    
+    public String getWeightFormatted() {
+        return formatWeight(weight);
     }
     
     public void setWeight(Float w) {
