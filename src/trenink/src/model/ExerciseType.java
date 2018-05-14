@@ -6,24 +6,21 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
+import javax.persistence.Table;
 
 /**
  *
  * @author karel
  */
 @Entity
-public class Workout implements Serializable {
+@Table(name="exercise_type")
+public class ExerciseType implements Serializable {
 
-    private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 3L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,27 +34,15 @@ public class Workout implements Serializable {
         this.id = id;
     }
 
-    private Date date;
+    private String name;
     
-    public Date getDate() {
-        return date;
+    public String getName() {
+        return name;
     }
 
-    public void setDate(Date d) {
-        this.date = d;
+    public void setName(String s) {
+        this.name = s;
     }
-    
-   /*private List<Exercise> exercises;
-    
-    //@OneToMany(fetch = FetchType.LAZY, mappedBy = "workout", cascade = CascadeType.ALL)
-    public List<Exercise> getExercises() {
-        return this.exercises;
-    }
-
-    public void setExercises(List<Exercise> e) {
-        this.exercises = e;
-    }
-    */
     
     @Override
     public int hashCode() {
@@ -69,10 +54,10 @@ public class Workout implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Workout)) {
+        if (!(object instanceof ExerciseType)) {
             return false;
         }
-        Workout other = (Workout) object;
+        ExerciseType other = (ExerciseType) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -81,7 +66,7 @@ public class Workout implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Workout[ id=" + id + " ]";
+        return "model.ExerciseType[ id=" + id + " ]";
     }
     
 }

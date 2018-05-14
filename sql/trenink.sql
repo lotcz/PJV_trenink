@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS exercise;
 
 CREATE TABLE exercise (
-	id integer NOT NULL,
+	id serial NOT NULL,
 	series integer NOT NULL DEFAULT 1,
 	repetitions integer NOT NULL DEFAULT 1,
 	weight real NOT NULL DEFAULT 1,
@@ -12,7 +12,7 @@ CREATE TABLE exercise (
 DROP TABLE IF EXISTS exercise_type;
 
 CREATE TABLE exercise_type (
-	id integer NOT NULL,
+	id serial NOT NULL,
 	name varchar(50) NULL
 );
 
@@ -25,7 +25,7 @@ CREATE TABLE weight (
 DROP TABLE IF EXISTS workout;
 
 CREATE TABLE workout (
-	id integer NOT NULL,
+	id serial NOT NULL,
 	date date NOT NULL,
 	time time without time zone NULL
 );

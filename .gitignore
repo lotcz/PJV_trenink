@@ -2,3 +2,5 @@
 /src/trenink/build/
 /src/trenink/dist/
 /src/mavenproject1/target/
+/doc/*.odt#
+/src/trenink/${dist.jar.dir}/config

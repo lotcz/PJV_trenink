@@ -3,6 +3,8 @@
   <persistence-unit name="treninkPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     <class>model.Workout</class>
-    <class>model.Weight</class>    
+    <class>model.Weight</class>
+    <class>model.ExerciseType</class>
+    <class>model.Exercise</class>
   </persistence-unit>
 </persistence>
