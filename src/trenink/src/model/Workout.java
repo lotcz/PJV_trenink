@@ -7,6 +7,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,7 +29,7 @@ public class Workout implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    
     public Long getId() {
         return id;
     }
@@ -47,9 +48,9 @@ public class Workout implements Serializable {
         this.date = d;
     }
     
-   /*private List<Exercise> exercises;
-    
-    //@OneToMany(fetch = FetchType.LAZY, mappedBy = "workout", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "workout", cascade = CascadeType.ALL)
+    private List<Exercise> exercises;
+        
     public List<Exercise> getExercises() {
         return this.exercises;
     }
@@ -57,8 +58,7 @@ public class Workout implements Serializable {
     public void setExercises(List<Exercise> e) {
         this.exercises = e;
     }
-    */
-    
+        
     @Override
     public int hashCode() {
         int hash = 0;
