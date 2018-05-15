@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package trenink;
+package eu.zavadil.trenink;
 
 import com.sun.javafx.scene.control.behavior.OptionalBoolean;
 import java.util.Optional;

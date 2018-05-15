@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package trenink;
+package eu.zavadil.trenink;
 
 import com.sun.javafx.scene.control.behavior.OptionalBoolean;
 import java.util.List;
@@ -31,8 +31,8 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Pair;
 import javax.persistence.TypedQuery;
-import model.Weight;
-import model.Workout;
+import eu.zavadil.trenink.model.Weight;
+import eu.zavadil.trenink.model.Workout;
 
 /**
  *

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package trenink;
+package eu.zavadil.trenink;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +24,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javax.persistence.TypedQuery;
-import model.ExerciseType;
+import eu.zavadil.trenink.model.ExerciseType;
 
 /**
  *

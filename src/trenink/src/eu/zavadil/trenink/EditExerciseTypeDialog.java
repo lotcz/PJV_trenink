@@ -3,11 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package trenink;
+package eu.zavadil.trenink;
 
-import javafx.util.Pair;
 import java.util.Optional;
-import com.sun.javafx.scene.control.behavior.OptionalBoolean;
 import java.text.ParseException;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -20,22 +18,28 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Window;
-import model.Weight;
+import eu.zavadil.trenink.model.ExerciseType;
 
 /**
  *
  * @author karel
  */
-public class AddWeightDialog {
+public class EditExerciseTypeDialog {
     
-    public static Optional<Float> show(Window owner) {
+    public static ExerciseType show(Window owner, ExerciseType t) {
+        
+        ExerciseType originalExerciseType = t;
         
         // Create the custom dialog.
-        Dialog<Float> dialog = new Dialog<>();
+        Dialog<ExerciseType> dialog = new Dialog<>();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(owner);
-        dialog.setTitle("Přidat hmotnost");
-        dialog.setHeaderText("Přidat novou hnotnost koule.");
+        dialog.setTitle("Cvik");
+        if (originalExerciseType.getId() == null) {
+            dialog.setHeaderText("Přidat nový druh cviku.");
+        } else {
+            dialog.setHeaderText("Upravit druh cviku.");
+        }
         
         // Set the button types.
         ButtonType saveButtonType = new ButtonType("Uložit", ButtonData.OK_DONE);
@@ -47,41 +51,46 @@ public class AddWeightDialog {
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 150, 10, 10));
-
-        TextField weightField = new TextField();
-        weightField.setPromptText("Hmotnost");
         
-        grid.add(new Label("Hmotnost:"), 0, 0);
-        grid.add(weightField, 1, 0);
-        grid.add(new Label("kg"), 2, 0);
+        if (originalExerciseType.getId() != null) {
+            grid.add(new Label("ID:"), 0, 0);
+            grid.add(new Label(originalExerciseType.getId().toString()), 1, 0);
+        }
+        
+        TextField nameField = new TextField(originalExerciseType.getName());
+        nameField.setPromptText("Název");
+        
+        grid.add(new Label("Název:"), 0, 1);
+        grid.add(nameField, 1, 1);
 
         // Enable/Disable save button
         Node saveButton = dialog.getDialogPane().lookupButton(saveButtonType);
         saveButton.setDisable(true);
 
         // Do some validation (using the Java 8 lambda syntax).
-        weightField.textProperty().addListener((observable, oldValue, newValue) -> {
+        nameField.textProperty().addListener((observable, oldValue, newValue) -> {
             saveButton.setDisable(newValue.trim().isEmpty());
         });
 
         dialog.getDialogPane().setContent(grid);        
-        Platform.runLater(() -> weightField.requestFocus());
+        Platform.runLater(() -> nameField.requestFocus());
                
-        // Convert the result to a float
+        // Convert the result to a username-password-pair when the login button is clicked.
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == saveButtonType) {                
-                Float result = null;
-                try {
-                    result = Weight.parseWeight(weightField.getText());
-                    return result;
-                } catch (ParseException ex) {
-                    MessageDialog.show("Neplatný formát čísla!");
-                }                
+                originalExerciseType.setName(nameField.getText());
+                return originalExerciseType;
             }
             return null;
         });
 
-        return dialog.showAndWait();  
+        Optional<ExerciseType> result = dialog.showAndWait();  
+        if (result.isPresent()) {
+            return result.get();            
+        } else {
+            return null;
+        }
+                
     }
 
 }

@@ -3,9 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package eu.zavadil.trenink.model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.FormatStyle;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -15,6 +21,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 
 
 /**
@@ -44,6 +52,19 @@ public class Workout implements Serializable {
         return date;
     }
 
+    private static SimpleDateFormat dateFormatter;
+    
+    private SimpleDateFormat getDateFormatter() {
+        if (dateFormatter == null) {
+            dateFormatter = new SimpleDateFormat("dd.MM.yyyy, EEEE");
+        }
+        return dateFormatter;
+    }
+    
+    public String getDateFormattedLong() {
+        return getDateFormatter().format(getDate());        
+    }
+    
     public void setDate(Date d) {
         this.date = d;
     }

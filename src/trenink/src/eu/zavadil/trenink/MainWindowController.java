@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package trenink;
+package eu.zavadil.trenink;
 
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.time.format.DateTimeFormatter;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -20,9 +21,14 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
-import model.Exercise;
-import model.Weight;
-import model.Workout;
+import eu.zavadil.trenink.model.Exercise;
+import eu.zavadil.trenink.model.Weight;
+import eu.zavadil.trenink.model.Workout;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.Date;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 
 /**
  *
@@ -31,35 +37,26 @@ import model.Workout;
 public class MainWindowController implements Initializable {
     
     private List<Workout> workouts;
-    
+        
+    @FXML public Button addWorkoutButton;
     @FXML public TableView<Workout> workoutsTable;
     @FXML public TableColumn<Workout, String> dateColumn;
     
+    @FXML public VBox exerciseSectionVBox;
+    @FXML public Label workoutDateLabel;
+    @FXML public Button addExerciseButton;
+    @FXML public Button removeExerciseButton;
+        
     @FXML public TableView<Exercise> exercisesTable;
     @FXML public TableColumn<Exercise, String> exerciseColumn;
     @FXML public TableColumn<Exercise, String> seriesColumn;
     @FXML public TableColumn<Exercise, String> repetitionsColumn;
     @FXML public TableColumn<Exercise, String> weightColumn;
     
-    private Workout getSelectedWorkout() {
-        return workoutsTable.getSelectionModel().getSelectedItem();
-    }
-    
-    private void refreshWorkoutForm() {
-        exercisesTable.getItems().clear();
-        Workout w = getSelectedWorkout();
-        if (w == null) {            
-            exercisesTable.setDisable(true);
-        } else {
-            exercisesTable.setDisable(false);
-            exercisesTable.setItems(FXCollections.observableArrayList(w.getExercises()));
-        }
-    }
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         refreshWorkoutForm();
-        dateColumn.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getDate().toString()));       
+        dateColumn.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getDateFormattedLong()));       
         loadWorkouts();
         workoutsTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         workoutsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -67,6 +64,9 @@ public class MainWindowController implements Initializable {
         });
         
         exercisesTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        exercisesTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            refreshExercisesButtons();
+        });
         exerciseColumn.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getExerciseType().getName()));
         seriesColumn.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getSeries().toString()));
         repetitionsColumn.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getRepetitions().toString()));
@@ -111,6 +111,32 @@ public class MainWindowController implements Initializable {
     
     };
     
+    private Workout getSelectedWorkout() {
+        return workoutsTable.getSelectionModel().getSelectedItem();
+    }
+    
+    private void refreshWorkoutForm() {
+        exercisesTable.getItems().clear();
+        Workout w = getSelectedWorkout();
+        if (w == null) {
+            workoutDateLabel.setText("");
+            exerciseSectionVBox.setDisable(true);
+        } else {
+            exerciseSectionVBox.setDisable(false);            
+            workoutDateLabel.setText(w.getDateFormattedLong());
+            removeExerciseButton.setDisable(true);
+            exercisesTable.setItems(FXCollections.observableArrayList(w.getExercises()));
+        }
+    }
+    
+    private Exercise getSelectedExercise() {
+        return exercisesTable.getSelectionModel().getSelectedItem();
+    }
+    
+    private void refreshExercisesButtons() {        
+        removeExerciseButton.setDisable((getSelectedExercise() == null));
+    }
+    
     private void exit() {
         Trenink.closePersistence();
         System.exit(0);
@@ -135,10 +161,5 @@ public class MainWindowController implements Initializable {
     private void handleEditExerciseTypesButtonAction(ActionEvent event) {
        ExerciseTypesDialog.displayDialog(Trenink.getPrimaryStage());
     }
-    
-    @FXML
-    private void handleSelectedWorkoutChangedAction(ActionEvent event) {
-       
-    }
-    
+        
 }

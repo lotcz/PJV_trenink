@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package trenink;
+package eu.zavadil.trenink;
 
 import javafx.concurrent.Task;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javax.persistence.TypedQuery;
-import model.Workout;
+import eu.zavadil.trenink.model.Workout;
 
 /**
  *
