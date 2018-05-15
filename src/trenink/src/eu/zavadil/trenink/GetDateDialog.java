@@ -5,9 +5,7 @@
  */
 package eu.zavadil.trenink;
 
-import javafx.util.Pair;
 import java.util.Optional;
-import com.sun.javafx.scene.control.behavior.OptionalBoolean;
 import java.text.ParseException;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -21,62 +19,61 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Window;
 import eu.zavadil.trenink.model.Weight;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Date;
+import javafx.scene.control.DatePicker;
 
 /**
  *
  * @author karel
  */
-public class AddWeightDialog {
+public class GetDateDialog {
     
-    public static Optional<Float> show(Window owner) {
+    public static Optional<Date> show(Window owner, String dialogTitle, String headerText, Date defaultDate) {
         
-        // Create the custom dialog.
-        Dialog<Float> dialog = new Dialog<>();
+        Dialog<Date> dialog = new Dialog<>();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(owner);
-        dialog.setTitle("Přidat váhu");
-        dialog.setHeaderText("Přidat novou váhu kettlebellu.");
+        dialog.setTitle(dialogTitle);
+        dialog.setHeaderText(headerText);
         
-        // Set the button types.
         ButtonType saveButtonType = new ButtonType("Uložit", ButtonData.OK_DONE);
         ButtonType cancelButtonType = new ButtonType("Storno", ButtonData.CANCEL_CLOSE);
         dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, cancelButtonType);
 
-        // Create the username and password labels and fields.
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 150, 10, 10));
 
-        TextField weightField = new TextField();
-        weightField.setPromptText("Váha");
+        DatePicker dateField = new DatePicker();
+        dateField.setPromptText("vložte datum");
         
-        grid.add(new Label("Váha:"), 0, 0);
-        grid.add(weightField, 1, 0);
-        grid.add(new Label("kg"), 2, 0);
-
-        // Enable/Disable save button
         Node saveButton = dialog.getDialogPane().lookupButton(saveButtonType);
-        saveButton.setDisable(true);
+        
+        if (defaultDate == null) {
+            saveButton.setDisable(true);
+        } else {
+            ZoneId defaultZoneId = ZoneId.systemDefault();        
+            Instant instant = defaultDate.toInstant();
+            dateField.setValue(instant.atZone(defaultZoneId).toLocalDate());
+        }
+        
+        grid.add(new Label("Datum:"), 0, 0);
+        grid.add(dateField, 1, 0);
 
-        // Do some validation (using the Java 8 lambda syntax).
-        weightField.textProperty().addListener((observable, oldValue, newValue) -> {
-            saveButton.setDisable(newValue.trim().isEmpty());
+        dateField.valueProperty().addListener((observable, oldValue, newValue) -> {
+            saveButton.setDisable(newValue == null);
         });
 
         dialog.getDialogPane().setContent(grid);        
-        Platform.runLater(() -> weightField.requestFocus());
+        Platform.runLater(() -> dateField.requestFocus());
                
-        // Convert the result to a float
         dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == saveButtonType) {                
-                Float result = null;
-                try {
-                    result = Weight.parseWeight(weightField.getText());
-                    return result;
-                } catch (ParseException ex) {
-                    MessageDialog.show("Neplatný formát čísla!");
-                }                
+            if (dialogButton == saveButtonType) {  
+                ZoneId defaultZoneId = ZoneId.systemDefault();
+                return Date.from(dateField.getValue().atStartOfDay(defaultZoneId).toInstant());
             }
             return null;
         });

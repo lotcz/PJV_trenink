@@ -14,14 +14,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eu.zavadil.trenink.MainWindowController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eu.zavadil.trenink.MainWindowController">
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
+      <MenuBar BorderPane.alignment="TOP_LEFT">
         <menus>
             <Menu mnemonicParsing="false" text="Soubor">
               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleRefreshButtonAction" text="Vložit trénink" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleRefreshButtonAction" text="Smazat trénink" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleAddWorkoutButtonAction" text="Nový trénink" />
+                  <MenuItem fx:id="changeDateMenuItem" mnemonicParsing="false" onAction="#handleChangeDateButtonAction" text="Změnit datum tréninku" />
+                  <MenuItem fx:id="removeWorkoutMenuItem" mnemonicParsing="false" onAction="#handleRemoveWorkoutButtonAction" text="Smazat trénink" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#handleRefreshButtonAction" text="Obnovit" />
                   <SeparatorMenuItem mnemonicParsing="false" />
@@ -30,13 +31,13 @@
             </Menu>
           <Menu mnemonicParsing="false" text="Nastavení">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#handleEditWeightsButtonAction" text="Hmotnosti koulí" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleEditExerciseTypesButtonAction" text="Cviky" />
+              <MenuItem mnemonicParsing="false" onAction="#handleEditWeightsButtonAction" text="Váhy" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleEditExerciseTypesButtonAction" text="Seznam cviků" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Nápověda">
             <items>
-              <MenuItem mnemonicParsing="false" text="O programu" />
+              <MenuItem mnemonicParsing="false" onAction="#handleAboutButtonAction" text="O programu" />
             </items>
           </Menu>
         </menus>
@@ -50,12 +51,12 @@
          <children>
             <HBox>
                <children>
-                  <Button fx:id="addWorkoutButton" mnemonicParsing="false" text="+ Nový trénink" />
+                  <Button fx:id="addWorkoutButton" mnemonicParsing="false" onAction="#handleAddWorkoutButtonAction" text="+ Nový trénink" />
                </children>
             </HBox>
-            <TableView id="workoutsTable" fx:id="workoutsTable" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0">
+            <TableView id="workoutsTable" fx:id="workoutsTable" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn fx:id="dateColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="198.0" resizable="false" sortType="DESCENDING" text="Datum tréninku" />
+                <TableColumn fx:id="dateColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="198.0" resizable="false" sortType="DESCENDING" sortable="false" text="Datum tréninku" />
               </columns>
                <VBox.margin>
                   <Insets top="5.0" />
@@ -65,17 +66,26 @@
       </VBox>
    </left>
    <center>
-      <VBox fx:id="exerciseSectionVBox" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="exerciseSectionVBox" maxHeight="1.7976931348623157E308" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="workoutDateLabel" text="Datum">
-               <font>
-                  <Font name="System Bold" size="20.0" />
-               </font>
-            </Label>
             <HBox>
                <children>
-                  <Button fx:id="addExerciseButton" mnemonicParsing="false" text="Přidat cvik" />
-                  <Button fx:id="removeExerciseButton" mnemonicParsing="false" text="Odebrat cvik">
+                  <Label fx:id="workoutDateLabel" text="Datum">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Button fx:id="addExerciseButton" mnemonicParsing="false" text="Přidat" />
+                  <Button fx:id="editExerciseButton" mnemonicParsing="false" text="Upravit">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="removeExerciseButton" layoutX="63.0" layoutY="10.0" mnemonicParsing="false" text="Odebrat">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
@@ -85,7 +95,7 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <TableView fx:id="exercisesTable" prefWidth="200.0">
+            <TableView fx:id="exercisesTable" maxHeight="1.7976931348623157E308" prefWidth="200.0" VBox.vgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="exerciseColumn" minWidth="-1.0" prefWidth="150.0" text="Cvik" />
                 <TableColumn fx:id="seriesColumn" prefWidth="75.0" text="Série" />

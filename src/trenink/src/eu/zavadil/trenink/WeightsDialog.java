@@ -5,7 +5,6 @@
  */
 package eu.zavadil.trenink;
 
-import com.sun.javafx.scene.control.behavior.OptionalBoolean;
 import java.util.List;
 import java.util.Optional;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -14,25 +13,18 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.control.Separator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import javafx.util.Pair;
 import javax.persistence.TypedQuery;
 import eu.zavadil.trenink.model.Weight;
-import eu.zavadil.trenink.model.Workout;
 
 /**
  *
@@ -115,7 +107,7 @@ public class WeightsDialog {
         weightsTable = new TableView<Weight>();
         VBox.setMargin(weightsTable, defaultInsets);
         
-        TableColumn<Weight, String> weightCol = new TableColumn<>("Hmotnost");
+        TableColumn<Weight, String> weightCol = new TableColumn<>("Váha");
         weightCol.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getWeightFormatted()));
         weightCol.setMinWidth(238);
         weightCol.setMaxWidth(250);
@@ -145,7 +137,7 @@ public class WeightsDialog {
         
         Scene scene = new Scene(root, 250, 480);
         stage = new Stage();
-        stage.setTitle("Hmotnosti koulí");
+        stage.setTitle("Váhy");
         stage.setScene(scene);
         stage.setMinWidth(250);
         stage.setMinHeight(480);
@@ -180,7 +172,7 @@ public class WeightsDialog {
         
         @Override
         public void handle(ActionEvent event) {
-            if (MessageDialog.showYesNoQuestion("Opravdu si přejete smazat tuto hmotnost?")) {
+            if (MessageDialog.showYesNoQuestion("Opravdu si přejete smazat tuto váhu?")) {
                 deleteWeight();
                 reloadData();
             }

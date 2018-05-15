@@ -97,8 +97,10 @@ public class Trenink extends Application {
         /* show main window */
         Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));        
         Scene scene = new Scene(root);        
-        stage.setScene(scene);
+        stage.setScene(scene);        
         stage.setTitle("Tréninkový deník");
+        stage.setMinHeight(300);
+        stage.setMinWidth(500);
         stage.show();
     }
 

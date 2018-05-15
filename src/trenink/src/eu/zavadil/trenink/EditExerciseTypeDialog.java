@@ -6,7 +6,6 @@
 package eu.zavadil.trenink;
 
 import java.util.Optional;
-import java.text.ParseException;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -30,7 +29,6 @@ public class EditExerciseTypeDialog {
         
         ExerciseType originalExerciseType = t;
         
-        // Create the custom dialog.
         Dialog<ExerciseType> dialog = new Dialog<>();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(owner);
@@ -41,12 +39,10 @@ public class EditExerciseTypeDialog {
             dialog.setHeaderText("Upravit druh cviku.");
         }
         
-        // Set the button types.
         ButtonType saveButtonType = new ButtonType("Uložit", ButtonData.OK_DONE);
         ButtonType cancelButtonType = new ButtonType("Storno", ButtonData.CANCEL_CLOSE);
         dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, cancelButtonType);
 
-        // Create the username and password labels and fields.
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
@@ -74,8 +70,7 @@ public class EditExerciseTypeDialog {
 
         dialog.getDialogPane().setContent(grid);        
         Platform.runLater(() -> nameField.requestFocus());
-               
-        // Convert the result to a username-password-pair when the login button is clicked.
+        
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == saveButtonType) {                
                 originalExerciseType.setName(nameField.getText());

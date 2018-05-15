@@ -7,10 +7,13 @@ package eu.zavadil.trenink.model;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +35,15 @@ import jdk.nashorn.internal.ir.annotations.Ignore;
 @Entity
 public class Workout implements Serializable {
 
+    public Workout() {
+        
+    }
+        
+    public Workout(Date d) {
+        this.setDate(d);
+        this.setExercises(new ArrayList<Exercise>());
+    }
+    
     private static final long serialVersionUID = 2L;
     
     @Id
@@ -63,6 +75,12 @@ public class Workout implements Serializable {
     
     public String getDateFormattedLong() {
         return getDateFormatter().format(getDate());        
+    }
+    
+    public LocalDate getAsLocalDate() {
+        ZoneId defaultZoneId = ZoneId.systemDefault();        
+        Instant instant = date.toInstant();        
+        return instant.atZone(defaultZoneId).toLocalDate();        
     }
     
     public void setDate(Date d) {

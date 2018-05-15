@@ -6,7 +6,6 @@
 package eu.zavadil.trenink;
 
 import java.util.List;
-import java.util.Optional;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
