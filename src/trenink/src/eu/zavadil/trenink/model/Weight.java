@@ -83,7 +83,7 @@ public class Weight implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Weight[" + weight + "]";
+        return getNumberFormat().format(weight);
     }
     
 }

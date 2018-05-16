@@ -79,13 +79,13 @@
             </HBox>
             <HBox>
                <children>
-                  <Button fx:id="addExerciseButton" mnemonicParsing="false" text="Přidat" />
-                  <Button fx:id="editExerciseButton" mnemonicParsing="false" text="Upravit">
+                  <Button fx:id="addExerciseButton" mnemonicParsing="false" onAction="#handleAddExerciseButtonAction" text="Přidat" />
+                  <Button fx:id="editExerciseButton" mnemonicParsing="false" onAction="#handleEditExerciseButtonAction" text="Upravit">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="removeExerciseButton" layoutX="63.0" layoutY="10.0" mnemonicParsing="false" text="Odebrat">
+                  <Button fx:id="removeExerciseButton" layoutX="63.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleRemoveExerciseButtonAction" text="Odebrat">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>

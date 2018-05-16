@@ -72,7 +72,7 @@ public class Exercise implements Serializable {
         return this.exerciseType;
     }
 
-    public void setBookCategory(ExerciseType et) {
+    public void setExerciseType(ExerciseType et) {
         this.exerciseType = et;
     }
     

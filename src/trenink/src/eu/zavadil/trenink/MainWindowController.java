@@ -25,7 +25,6 @@ import eu.zavadil.trenink.model.Weight;
 import eu.zavadil.trenink.model.Workout;
 import java.util.Date;
 import java.util.Optional;
-import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -138,31 +137,31 @@ public class MainWindowController implements Initializable {
     private Label loadingExercisesDataLabel = new Label("Načítám trénink.");
     private Label errorLoadingExercisesDataLabel = new Label("Při načítání tréninku se vyskytla chyba.");
     
-    private void refreshWorkoutForm() {
-        exercisesTable.getItems().clear();
+    private void refreshWorkoutForm() {        
         Workout w = getSelectedWorkout();
+        exercisesTable.getItems().clear();
         if (w == null) {
             workoutDateLabel.setText("");
             exercisesTable.setPlaceholder(noWorkoutSelectedLabel);
             exerciseSectionVBox.setDisable(true);
             changeDateMenuItem.setDisable(true);
-            removeWorkoutMenuItem.setDisable(true);
+            removeWorkoutMenuItem.setDisable(true);           
         } else {
             exerciseSectionVBox.setDisable(false);    
             changeDateMenuItem.setDisable(false);
             removeWorkoutMenuItem.setDisable(false);
             exercisesTable.setPlaceholder(loadingExercisesDataLabel);
-            workoutDateLabel.setText(w.getDateFormattedLong());                       
+            workoutDateLabel.setText(w.getDateFormattedLong());
             List<Exercise> exercises = w.getExercises();
             if (exercises.isEmpty()) {
                 exercisesTable.setPlaceholder(noExerciseDataLabel);
             } else {            
                 exercisesTable.setItems(FXCollections.observableArrayList(exercises));
-            }
+            }            
             refreshExercisesButtons();
         }
     }
-    
+       
     private void addNewWorkout() {
         Optional<Date> d = GetDateDialog.show(
             Trenink.getPrimaryStage(),
@@ -243,6 +242,66 @@ public class MainWindowController implements Initializable {
         }
     }
     
+    private void addNewExercise() {
+        Exercise e = EditExerciseDialog.show(
+            Trenink.getPrimaryStage(),            
+            new Exercise()
+        );
+        
+        if (e != null) {            
+            Trenink.getEntityManager().getTransaction().begin();
+            try {         
+                Workout w = getSelectedWorkout();
+                e.setWorkout(w);                
+                Trenink.getEntityManager().persist(e);
+                Trenink.getEntityManager().getTransaction().commit();                
+                w.getExercises().add(e);
+                refreshWorkoutForm();
+            } catch (Exception ex) {
+                Trenink.getEntityManager().getTransaction().rollback();
+                MessageDialog.show(ex.getMessage());
+            }
+        }
+    }
+    
+    private void editExercise() {
+        Exercise e = getSelectedExercise();
+        if (e != null) {
+            e = EditExerciseDialog.show(Trenink.getPrimaryStage(), e);
+            
+            if (e != null) {                
+                Trenink.getEntityManager().getTransaction().begin();
+                try {            
+                    Trenink.getEntityManager().persist(e);
+                    Trenink.getEntityManager().getTransaction().commit();
+                    refreshWorkoutForm();
+                } catch (Exception ex) {
+                    Trenink.getEntityManager().getTransaction().rollback();
+                    MessageDialog.show(ex.getMessage());
+                }
+            }
+        }
+    }
+    
+    private void removeExercise() {
+        Exercise e = getSelectedExercise();
+        if (e != null) {            
+            if (MessageDialog.showYesNoQuestion("Opravdu si přejete odebrat tento cvik z tréninku?")) {
+                Trenink.getEntityManager().getTransaction().begin();
+                try {
+                    Workout w = e.getWorkout();
+                    w.getExercises().remove(e);
+                    Trenink.getEntityManager().remove(e);
+                    Trenink.getEntityManager().getTransaction().commit();                    
+                    refreshWorkoutForm();
+                } catch (Exception ex) {
+                    Trenink.getEntityManager().getTransaction().rollback();
+                    MessageDialog.show(ex.getMessage());
+                }
+            }
+        }
+    }
+    
     private void exit() {
         Trenink.closePersistence();
         System.exit(0);
@@ -283,6 +342,21 @@ public class MainWindowController implements Initializable {
         removeWorkout();
     }
        
+    @FXML
+    private void handleAddExerciseButtonAction(ActionEvent event) {
+        addNewExercise();
+    }
+    
+    @FXML
+    private void handleEditExerciseButtonAction(ActionEvent event) {
+        editExercise();
+    }
+    
+    @FXML
+    private void handleRemoveExerciseButtonAction(ActionEvent event) {
+        removeExercise();
+    }
+    
     @FXML
     private void handleAboutButtonAction(ActionEvent event)  throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("AboutDialogWindow.fxml"));        

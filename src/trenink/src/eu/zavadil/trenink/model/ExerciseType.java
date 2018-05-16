@@ -66,7 +66,7 @@ public class ExerciseType implements Serializable {
 
     @Override
     public String toString() {
-        return "model.ExerciseType[ id=" + id + " ]";
+        return getName();
     }
     
 }
