@@ -5,13 +5,12 @@
  */
 package eu.zavadil.trenink;
 
-import com.sun.javafx.scene.control.behavior.OptionalBoolean;
 import java.util.Optional;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
-import javafx.util.Pair;
+import javafx.stage.Stage;
 
 /**
  *
@@ -21,6 +20,8 @@ public class MessageDialog {
     
     public static void show(String text) {
         Dialog dialog = new Dialog<>();
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(Trenink.getIcon()); 
         ButtonType saveButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().add(saveButtonType);
         dialog.getDialogPane().setContent(new Label(text));        
@@ -29,6 +30,8 @@ public class MessageDialog {
     
     public static boolean showYesNoQuestion(String question) {
         Dialog<Boolean> dialog = new Dialog<Boolean>();
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(Trenink.getIcon()); 
         ButtonType yesButtonType = new ButtonType("Ano", ButtonBar.ButtonData.YES);
         ButtonType noButtonType = new ButtonType("Ne", ButtonBar.ButtonData.NO);
         dialog.getDialogPane().getButtonTypes().addAll(yesButtonType, noButtonType);

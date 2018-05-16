@@ -5,6 +5,7 @@
  */
 package eu.zavadil.trenink;
 
+import static eu.zavadil.trenink.Trenink.getIcon;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -39,6 +40,11 @@ import javafx.stage.Stage;
  * @author karel
  */
 public class MainWindowController implements Initializable {
+    
+    /**
+     * this will be selected as active workout after refresh
+     */
+    private Workout selectWorkout;
     
     private ObservableList<Workout> workouts;
         
@@ -106,6 +112,10 @@ public class MainWindowController implements Initializable {
                  workoutsTable.setPlaceholder(noWorkoutDataLabel);
             }
             workoutsTable.setItems(workouts);
+            if (selectWorkout != null) {
+                workoutsTable.getSelectionModel().select(selectWorkout);
+                selectWorkout = null;
+            }
         }
     
     };
@@ -195,14 +205,14 @@ public class MainWindowController implements Initializable {
                 "Vložte nové datum tréninku.",
                 w.getDate()
             );
-            if (d.isPresent()) {
-                workouts.remove(w);
+            if (d.isPresent()) {                
                 w.setDate(d.get());
                 Trenink.getEntityManager().getTransaction().begin();
                 try {            
                     Trenink.getEntityManager().persist(w);
                     Trenink.getEntityManager().getTransaction().commit();
-                    addWorkoutAndSelect(w);
+                    selectWorkout = w;
+                    loadWorkouts();
                 } catch (Exception e) {
                     Trenink.getEntityManager().getTransaction().rollback();
                     MessageDialog.show(e.getMessage());
@@ -364,6 +374,7 @@ public class MainWindowController implements Initializable {
         Stage stage = new Stage();        
         stage.setScene(scene);        
         stage.setTitle("O programu");
+        stage.getIcons().add(Trenink.getIcon()); 
         stage.setResizable(false);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(Trenink.getPrimaryStage());

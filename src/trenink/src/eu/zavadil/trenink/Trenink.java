@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
+import javafx.scene.image.Image;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -53,6 +54,15 @@ public class Trenink extends Application {
             emfactory.close();
             emfactory = null;
         }
+    }
+    
+    private static Image icon;
+    
+    public static Image getIcon() {
+        if (icon == null) {
+            icon = new Image(Trenink.class.getResourceAsStream( "icon.png" ));
+        }
+        return icon;
     }
     
     private static Stage primaryStage;
@@ -99,6 +109,7 @@ public class Trenink extends Application {
         Scene scene = new Scene(root);        
         stage.setScene(scene);        
         stage.setTitle("Tréninkový deník");
+        stage.getIcons().add(getIcon()); 
         stage.setMinHeight(300);
         stage.setMinWidth(500);
         stage.show();

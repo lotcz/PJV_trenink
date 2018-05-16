@@ -50,6 +50,7 @@ public class EditExerciseDialog {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(owner);
         dialog.setTitle("Cvik");
+
         if (originalExercise.getId() == null) {
             dialog.setHeaderText("Přidat nový cvik.");
         } else {

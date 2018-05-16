@@ -35,6 +35,7 @@ public class WeightsDialog {
     public static void displayDialog(Window owner) {
         WeightsDialog dialog = new WeightsDialog();
         Stage stage = dialog.prepareUI();   
+        stage.getIcons().add(Trenink.getIcon()); 
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(owner);
         stage.showAndWait();

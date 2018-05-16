@@ -35,6 +35,7 @@ public class ExerciseTypesDialog {
         ExerciseTypesDialog dialog = new ExerciseTypesDialog();
         Stage stage = dialog.prepareUI();   
         stage.initModality(Modality.APPLICATION_MODAL);
+        stage.getIcons().add(Trenink.getIcon()); 
         stage.initOwner(owner);
         stage.showAndWait();
     }

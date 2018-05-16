@@ -26,7 +26,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import jdk.nashorn.internal.ir.annotations.Ignore;
-
+import javafx.beans.property.StringProperty;
 
 /**
  *
