@@ -10,11 +10,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -24,13 +20,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import jdk.nashorn.internal.ir.annotations.Ignore;
-import javafx.beans.property.StringProperty;
 
 /**
- *
- * @author karel
+ * Represents a single training session.
  */
 @Entity
 public class Workout implements Serializable {
@@ -47,7 +39,7 @@ public class Workout implements Serializable {
     private static final long serialVersionUID = 2L;
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     public Long getId() {
@@ -60,6 +52,9 @@ public class Workout implements Serializable {
 
     private Date date;
     
+    /**
+     * Get date of this training session.
+     */
     public Date getDate() {
         return date;
     }
@@ -73,16 +68,25 @@ public class Workout implements Serializable {
         return dateFormatter;
     }
     
+    /**
+     * Get date of this training session formatted as long string with day of week.
+     */
     public String getDateFormattedLong() {
         return getDateFormatter().format(getDate());        
     }
     
+    /**
+     * Get date of this training session as LocalDate class.
+     */
     public LocalDate getAsLocalDate() {
         ZoneId defaultZoneId = ZoneId.systemDefault();        
         Instant instant = date.toInstant();        
         return instant.atZone(defaultZoneId).toLocalDate();        
     }
     
+    /**
+     * Set date of this training session formatted.
+     */
     public void setDate(Date d) {
         this.date = d;
     }
