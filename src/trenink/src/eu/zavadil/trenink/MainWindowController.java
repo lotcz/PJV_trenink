@@ -67,6 +67,11 @@ public class MainWindowController implements Initializable {
     @FXML public TableColumn<Exercise, String> repetitionsColumn;
     @FXML public TableColumn<Exercise, String> weightColumn;
     
+    /**
+     * Initialize window controls. Load workouts.
+     * @param url
+     * @param rb 
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         refreshWorkoutForm();
