@@ -72,7 +72,7 @@ public class MainWindowController implements Initializable {
     @FXML public TableColumn<Exercise, String> weightColumn;
     
     /**
-     * Initialize window controls. Load workouts.
+     * Initialize window controls and load workouts.
      * @param url
      * @param rb 
      */
@@ -80,7 +80,7 @@ public class MainWindowController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         refreshWorkoutForm();
         dateColumn.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getDateFormattedLong()));       
-        loadWorkouts();
+        
         workoutsTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         workoutsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             refreshWorkoutForm();
@@ -94,6 +94,8 @@ public class MainWindowController implements Initializable {
         seriesColumn.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getSeries().toString()));
         repetitionsColumn.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getRepetitions().toString()));
         weightColumn.setCellValueFactory(data -> new ReadOnlyStringWrapper(Weight.formatWeight(data.getValue().getWeight())));
+        
+        loadWorkouts();
     }   
     
     private WorkoutLoader loader;
@@ -102,6 +104,9 @@ public class MainWindowController implements Initializable {
     private Label loadingWorkoutsDataLabel = new Label("Načítám tréninky z databáze.");
     private Label errorLoadingWorkoutsDataLabel = new Label("Při načítání tréninků se vyskytla chyba.");
     
+    /**
+     * Start loading workouts in new thread.
+     */
     private void loadWorkouts() {
         workoutsTable.setPlaceholder(loadingWorkoutsDataLabel);
         workoutsTable.getItems().clear();
@@ -113,6 +118,9 @@ public class MainWindowController implements Initializable {
         loaderThread.start();
     }
         
+    /**
+     * Event handler called when workouts are loaded.
+     */
     private EventHandler<WorkerStateEvent> workoutsLoaded = new EventHandler<WorkerStateEvent>() {
         
         @Override
@@ -132,6 +140,9 @@ public class MainWindowController implements Initializable {
     
     };
     
+    /**
+     * Event handler called when workouts loading fails.
+     */
     private EventHandler<WorkerStateEvent> workoutsLoadingFailed = new EventHandler<WorkerStateEvent>() {
         
         @Override
@@ -141,10 +152,18 @@ public class MainWindowController implements Initializable {
     
     };
     
+    /**
+     * Currently selected workout.
+     * @return Currently selected workout.
+     */
     private Workout getSelectedWorkout() {
         return workoutsTable.getSelectionModel().getSelectedItem();
     }
     
+    /**
+     * Add new workout to a list and select it.
+     * @param w 
+     */
     private void addWorkoutAndSelect(Workout w) {
         int i = 0;
         while (i < workouts.size() && w.getDate().before(workouts.get(i).getDate())) {
@@ -159,6 +178,9 @@ public class MainWindowController implements Initializable {
     private Label loadingExercisesDataLabel = new Label("Načítám trénink.");
     private Label errorLoadingExercisesDataLabel = new Label("Při načítání tréninku se vyskytla chyba.");
     
+    /**
+     * Refresh buttons and menu items related to selected workout.
+     */
     private void refreshWorkoutForm() {        
         Workout w = getSelectedWorkout();
         exercisesTable.getItems().clear();
@@ -184,7 +206,10 @@ public class MainWindowController implements Initializable {
         }
     }
        
-    private void addNewWorkout() {
+    /**
+    * Ask user for a date and add new workout if value is entered.
+    */
+     private void addNewWorkout() {
         Optional<Date> d = GetDateDialog.show(
             Trenink.getPrimaryStage(),
             "Nový trénink",
@@ -194,7 +219,6 @@ public class MainWindowController implements Initializable {
         
         if (d.isPresent()) {
             Workout w = new Workout(d.get());
-            //w.setDate();
             // TO DO - copy latest workout exercises
             Trenink.getEntityManager().getTransaction().begin();
             try {            
@@ -208,6 +232,9 @@ public class MainWindowController implements Initializable {
         }
     }
     
+     /**
+     * Let user change the date of selected workout.
+     */
     private void changeWorkoutDate() {
         Workout w = getSelectedWorkout();
         if (w != null) {
@@ -233,6 +260,9 @@ public class MainWindowController implements Initializable {
         }
     }
     
+    /**
+     * Let user delete a workout.
+     */
     private void removeWorkout() {
         Workout w = getSelectedWorkout();
         if (w != null) {            
@@ -324,6 +354,9 @@ public class MainWindowController implements Initializable {
         }
     }
     
+    /**
+     * Exports workouts into a CSV file and opens the file in OS default application for CSV.
+     */
     private void generateCsvFile() {
         try {
             String outputFilePath = "kettlebel-treninky.csv";
