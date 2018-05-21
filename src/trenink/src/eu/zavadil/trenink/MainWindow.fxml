@@ -25,6 +25,7 @@
                   <MenuItem fx:id="removeWorkoutMenuItem" mnemonicParsing="false" onAction="#handleRemoveWorkoutButtonAction" text="Smazat trénink" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#handleRefreshButtonAction" text="Obnovit" />
+                  <MenuItem fx:id="exportMenuItem" mnemonicParsing="false" onAction="#handleExportButtonAction" text="Export" />
                   <SeparatorMenuItem mnemonicParsing="false" />
               <MenuItem mnemonicParsing="false" onAction="#handleCloseButtonAction" text="Ukončit program" />
               </items>

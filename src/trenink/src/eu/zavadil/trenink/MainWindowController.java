@@ -5,7 +5,6 @@
  */
 package eu.zavadil.trenink;
 
-import static eu.zavadil.trenink.Trenink.getIcon;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -24,6 +23,10 @@ import javafx.scene.control.TableColumn;
 import eu.zavadil.trenink.model.Exercise;
 import eu.zavadil.trenink.model.Weight;
 import eu.zavadil.trenink.model.Workout;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
 import javafx.fxml.FXMLLoader;
@@ -50,7 +53,8 @@ public class MainWindowController implements Initializable {
         
     @FXML public MenuItem changeDateMenuItem;
     @FXML public MenuItem removeWorkoutMenuItem;
-    
+    @FXML public MenuItem exportMenuItem;
+     
     @FXML public Button addWorkoutButton;
     @FXML public TableView<Workout> workoutsTable;
     @FXML public TableColumn<Workout, String> dateColumn;
@@ -96,6 +100,7 @@ public class MainWindowController implements Initializable {
     private void loadWorkouts() {
         workoutsTable.setPlaceholder(loadingWorkoutsDataLabel);
         workoutsTable.getItems().clear();
+        exportMenuItem.setDisable(true);
         loader = new WorkoutLoader();
         loader.setOnSucceeded(workoutsLoaded);        
         loader.setOnFailed(workoutsLoadingFailed);
@@ -110,12 +115,14 @@ public class MainWindowController implements Initializable {
             workouts = loader.getValue();
             if (workouts.size() == 0) {
                  workoutsTable.setPlaceholder(noWorkoutDataLabel);
-            }
-            workoutsTable.setItems(workouts);
-            if (selectWorkout != null) {
-                workoutsTable.getSelectionModel().select(selectWorkout);
-                selectWorkout = null;
-            }
+            } else {
+                exportMenuItem.setDisable(false);
+                workoutsTable.setItems(workouts);
+                if (selectWorkout != null) {
+                    workoutsTable.getSelectionModel().select(selectWorkout);
+                    selectWorkout = null;
+                }
+            }            
         }
     
     };
@@ -312,6 +319,43 @@ public class MainWindowController implements Initializable {
         }
     }
     
+    private void generateCsvFile() {
+        try {
+            String outputFilePath = "kettlebel-treninky.csv";
+            FileWriter writer = new FileWriter(outputFilePath);
+
+            workouts.forEach((w) -> {
+                    
+                w.getExercises().forEach((exercise) -> {
+                        try {
+                            System.out.println(w.getDateFormattedLong());
+                            writer.append(w.getDate().toString());
+                            writer.append(';');
+                            writer.append(exercise.getExerciseType().getName());
+                            writer.append(';');
+                            writer.append(exercise.getSeries().toString());
+                            writer.append(';');
+                            writer.append(exercise.getRepetitions().toString());
+                            writer.append(';');
+                            writer.append(Weight.formatWeight(exercise.getWeight()));
+                            writer.append('\n');
+                        } catch (IOException e) {
+                             e.printStackTrace();   
+                        }
+                    }
+                );
+                
+            });
+            
+            writer.flush();
+            writer.close();
+            Desktop dt = Desktop.getDesktop();
+            dt.open(new File(outputFilePath));
+        } catch(IOException e) {
+              e.printStackTrace();
+        } 
+    }
+    
     private void exit() {
         Trenink.closePersistence();
         System.exit(0);
@@ -379,6 +423,11 @@ public class MainWindowController implements Initializable {
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(Trenink.getPrimaryStage());
         stage.showAndWait();
+    }
+    
+    @FXML
+    private void handleExportButtonAction(ActionEvent event)  throws Exception {
+        generateCsvFile();
     }
     
 }
