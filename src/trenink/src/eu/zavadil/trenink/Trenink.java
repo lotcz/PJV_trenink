@@ -38,6 +38,10 @@ public class Trenink extends Application {
     
     private static EntityManager entitymanager;
             
+    /**
+     * Entity manager used across whole project. It is lazy initialized when first 
+     * @return 
+     */
     public static EntityManager getEntityManager() {
         if (entitymanager == null) {
             entitymanager = getEntityManagerFactory().createEntityManager();
@@ -45,6 +49,9 @@ public class Trenink extends Application {
         return entitymanager;
     }
     
+    /**
+     * Close entity manager and entity manager factory.
+     */
     public static void closePersistence() {
         if (entitymanager != null) {
             entitymanager.close();
@@ -58,6 +65,10 @@ public class Trenink extends Application {
     
     private static Image icon;
     
+    /**
+     * Universal icon for this application.
+     * @return Image object with icon.
+     */
     public static Image getIcon() {
         if (icon == null) {
             icon = new Image(Trenink.class.getResourceAsStream( "icon.png" ));
@@ -67,10 +78,19 @@ public class Trenink extends Application {
     
     private static Stage primaryStage;
     
+    /**
+     * Primary window of this application.
+     * @return 
+     */
     public static Stage getPrimaryStage() {
         return primaryStage;
     }
     
+    /**
+     * Start the application. This contains main initialization code. It will check existence of config file and whether db is accessible.
+     * @param stage
+     * @throws Exception 
+     */
     @Override
     public void start(Stage stage) throws Exception {
         
@@ -115,6 +135,11 @@ public class Trenink extends Application {
         stage.show();
     }
 
+    /**
+     * Close the application.
+     * 
+     * @throws Exception 
+     */
     @Override
     public void stop() throws Exception {
         closePersistence();
