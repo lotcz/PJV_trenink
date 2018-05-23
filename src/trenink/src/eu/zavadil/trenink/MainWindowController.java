@@ -51,25 +51,25 @@ public class MainWindowController implements Initializable {
     
     private ObservableList<Workout> workouts;
         
-    @FXML public MenuItem changeDateMenuItem;
-    @FXML public MenuItem removeWorkoutMenuItem;
-    @FXML public MenuItem exportMenuItem;
+    @FXML private MenuItem changeDateMenuItem;
+    @FXML private MenuItem removeWorkoutMenuItem;
+    @FXML private MenuItem exportMenuItem;
      
-    @FXML public Button addWorkoutButton;
-    @FXML public TableView<Workout> workoutsTable;
-    @FXML public TableColumn<Workout, String> dateColumn;
+    @FXML private Button addWorkoutButton;
+    @FXML private TableView<Workout> workoutsTable;
+    @FXML private TableColumn<Workout, String> dateColumn;
     
-    @FXML public VBox exerciseSectionVBox;
-    @FXML public Label workoutDateLabel;
-    @FXML public Button addExerciseButton;
-    @FXML public Button editExerciseButton;
-    @FXML public Button removeExerciseButton;
+    @FXML private VBox exerciseSectionVBox;
+    @FXML private Label workoutDateLabel;
+    @FXML private Button addExerciseButton;
+    @FXML private Button editExerciseButton;
+    @FXML private Button removeExerciseButton;
         
-    @FXML public TableView<Exercise> exercisesTable;
-    @FXML public TableColumn<Exercise, String> exerciseColumn;
-    @FXML public TableColumn<Exercise, String> seriesColumn;
-    @FXML public TableColumn<Exercise, String> repetitionsColumn;
-    @FXML public TableColumn<Exercise, String> weightColumn;
+    @FXML private TableView<Exercise> exercisesTable;
+    @FXML private TableColumn<Exercise, String> exerciseColumn;
+    @FXML private TableColumn<Exercise, String> seriesColumn;
+    @FXML private TableColumn<Exercise, String> repetitionsColumn;
+    @FXML private TableColumn<Exercise, String> weightColumn;
     
     /**
      * Initialize window controls and load workouts.
@@ -107,7 +107,7 @@ public class MainWindowController implements Initializable {
     /**
      * Start loading workouts in new thread.
      */
-    private void loadWorkouts() {
+    public void loadWorkouts() {
         workoutsTable.setPlaceholder(loadingWorkoutsDataLabel);
         workoutsTable.getItems().clear();
         exportMenuItem.setDisable(true);
@@ -121,7 +121,7 @@ public class MainWindowController implements Initializable {
     /**
      * Event handler called when workouts are loaded.
      */
-    private EventHandler<WorkerStateEvent> workoutsLoaded = new EventHandler<WorkerStateEvent>() {
+    public EventHandler<WorkerStateEvent> workoutsLoaded = new EventHandler<WorkerStateEvent>() {
         
         @Override
         public void handle(WorkerStateEvent t) {
@@ -143,7 +143,7 @@ public class MainWindowController implements Initializable {
     /**
      * Event handler called when workouts loading fails.
      */
-    private EventHandler<WorkerStateEvent> workoutsLoadingFailed = new EventHandler<WorkerStateEvent>() {
+    public EventHandler<WorkerStateEvent> workoutsLoadingFailed = new EventHandler<WorkerStateEvent>() {
         
         @Override
         public void handle(WorkerStateEvent t) {
@@ -156,7 +156,7 @@ public class MainWindowController implements Initializable {
      * Currently selected workout.
      * @return Currently selected workout.
      */
-    private Workout getSelectedWorkout() {
+    public Workout getSelectedWorkout() {
         return workoutsTable.getSelectionModel().getSelectedItem();
     }
     
@@ -164,7 +164,7 @@ public class MainWindowController implements Initializable {
      * Add new workout to a list and select it.
      * @param w 
      */
-    private void addWorkoutAndSelect(Workout w) {
+    public void addWorkoutAndSelect(Workout w) {
         int i = 0;
         while (i < workouts.size() && w.getDate().before(workouts.get(i).getDate())) {
             i++;
@@ -181,7 +181,7 @@ public class MainWindowController implements Initializable {
     /**
      * Refresh buttons and menu items related to selected workout.
      */
-    private void refreshWorkoutForm() {        
+    public void refreshWorkoutForm() {        
         Workout w = getSelectedWorkout();
         exercisesTable.getItems().clear();
         if (w == null) {
@@ -209,7 +209,7 @@ public class MainWindowController implements Initializable {
     /**
     * Ask user for a date and add new workout if value is entered.
     */
-     private void addNewWorkout() {
+     public void addNewWorkout() {
         Optional<Date> d = GetDateDialog.show(
             Trenink.getPrimaryStage(),
             "Nový trénink",
@@ -235,7 +235,7 @@ public class MainWindowController implements Initializable {
      /**
      * Let user change the date of selected workout.
      */
-    private void changeWorkoutDate() {
+    public void changeWorkoutDate() {
         Workout w = getSelectedWorkout();
         if (w != null) {
             Optional<Date> d = GetDateDialog.show(
@@ -263,7 +263,7 @@ public class MainWindowController implements Initializable {
     /**
      * Let user delete a workout.
      */
-    private void removeWorkout() {
+    public void removeWorkout() {
         Workout w = getSelectedWorkout();
         if (w != null) {            
             if (MessageDialog.showYesNoQuestion("Opravdu si přejete smazat tento trénink?")) {                                
@@ -280,11 +280,18 @@ public class MainWindowController implements Initializable {
         }
     }
     
-    private Exercise getSelectedExercise() {
+    /**
+     * Returns currently selected exercise.
+     * @return 
+     */
+    public Exercise getSelectedExercise() {
         return exercisesTable.getSelectionModel().getSelectedItem();
     }
     
-    private void refreshExercisesButtons() {        
+    /**
+     * Refresh buttons and menu items related to exercise.
+     */
+    public void refreshExercisesButtons() {        
         if (getSelectedExercise() == null) {
             editExerciseButton.setDisable(true);
             removeExerciseButton.setDisable(true);
@@ -294,7 +301,10 @@ public class MainWindowController implements Initializable {
         }
     }
     
-    private void addNewExercise() {
+    /**
+     * Let user add new exercise.
+     */
+    public void addNewExercise() {
         Exercise e = EditExerciseDialog.show(
             Trenink.getPrimaryStage(),            
             new Exercise()
@@ -316,7 +326,10 @@ public class MainWindowController implements Initializable {
         }
     }
     
-    private void editExercise() {
+    /**
+     * Edit selected exercise.
+     */
+    public void editExercise() {
         Exercise e = getSelectedExercise();
         if (e != null) {
             e = EditExerciseDialog.show(Trenink.getPrimaryStage(), e);
@@ -335,7 +348,10 @@ public class MainWindowController implements Initializable {
         }
     }
     
-    private void removeExercise() {
+    /**
+     * Delete selected exercise.
+     */
+    public void removeExercise() {
         Exercise e = getSelectedExercise();
         if (e != null) {            
             if (MessageDialog.showYesNoQuestion("Opravdu si přejete odebrat tento cvik z tréninku?")) {
@@ -357,7 +373,7 @@ public class MainWindowController implements Initializable {
     /**
      * Exports workouts into a CSV file and opens the file in OS default application for CSV.
      */
-    private void generateCsvFile() {
+    public void generateCsvFile() {
         try {
             String outputFilePath = "kettlebel-treninky.csv";
             FileWriter writer = new FileWriter(outputFilePath);
@@ -394,7 +410,7 @@ public class MainWindowController implements Initializable {
         } 
     }
     
-    private void exit() {
+    public void exit() {
         Trenink.closePersistence();
         System.exit(0);
     }

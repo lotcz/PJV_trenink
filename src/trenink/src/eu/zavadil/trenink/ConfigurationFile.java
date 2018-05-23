@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- *
+ * Represents configuration file with application settings.
  * @author karel
  */
 public class ConfigurationFile {
@@ -20,6 +20,12 @@ public class ConfigurationFile {
     private String filePath;
     private Properties props;
             
+    /**
+     * 
+     * @param path Path to config file.
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public ConfigurationFile(String path) throws FileNotFoundException, IOException {
         filePath = path;
         props = new Properties();

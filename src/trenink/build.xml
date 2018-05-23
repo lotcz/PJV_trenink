@@ -52,7 +52,7 @@
     -->
     <target name="-pre-jar">
         <echo>Copying resources files to build directory...</echo>
-        <copy todir="${dist.jar.dir}/config">
+        <copy todir="${dist.dir}/config">
             <fileset dir="config" includes="**"/>
         </copy>
     </target>
