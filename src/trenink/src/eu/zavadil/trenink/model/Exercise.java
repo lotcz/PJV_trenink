@@ -6,11 +6,14 @@
 package eu.zavadil.trenink.model;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 /**
@@ -76,7 +79,7 @@ public class Exercise implements Serializable {
         this.exerciseType = et;
     }
     
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "workout")
     private Workout workout;
         

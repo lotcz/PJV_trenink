@@ -19,6 +19,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 /**
@@ -91,7 +94,7 @@ public class Workout implements Serializable {
         this.date = d;
     }
     
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "workout", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "workout")
     private List<Exercise> exercises;
         
     public List<Exercise> getExercises() {
@@ -101,7 +104,7 @@ public class Workout implements Serializable {
     public void setExercises(List<Exercise> e) {
         this.exercises = e;
     }
-        
+    
     @Override
     public int hashCode() {
         int hash = 0;

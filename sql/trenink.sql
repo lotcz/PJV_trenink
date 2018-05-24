@@ -57,7 +57,7 @@ ALTER TABLE workout ADD CONSTRAINT PK_workout
 /* Create Foreign Key Constraints */
 
 ALTER TABLE exercise ADD CONSTRAINT FK_exercise_exercise_type
-	FOREIGN KEY (type) REFERENCES exercise_type (id) ON DELETE Cascade
+	FOREIGN KEY (type) REFERENCES exercise_type (id)
 ;
 
 ALTER TABLE exercise ADD CONSTRAINT FK_exercise_workout

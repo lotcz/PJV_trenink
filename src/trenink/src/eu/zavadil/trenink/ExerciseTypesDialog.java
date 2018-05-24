@@ -24,10 +24,10 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import javax.persistence.TypedQuery;
 import eu.zavadil.trenink.model.ExerciseType;
+import eu.zavadil.trenink.model.Workout;
 
 /**
- *
- * @author karel
+ * Shows dialog window that lets users manage exercise types.
  */
 public class ExerciseTypesDialog {
     
@@ -52,20 +52,21 @@ public class ExerciseTypesDialog {
             Trenink.getEntityManager().persist(t);
             Trenink.getEntityManager().getTransaction().commit();
         } catch (Exception e) {
-            Trenink.getEntityManager().getTransaction().rollback();
             MessageDialog.show(e.getMessage());
+            Trenink.getEntityManager().getTransaction().rollback();
         }
     }
     
     private void deleteExerciseType() {
-        ExerciseType t = typesTable.getSelectionModel().getSelectedItem();
+        ExerciseType t = typesTable.getSelectionModel().getSelectedItem();        
         Trenink.getEntityManager().getTransaction().begin();
         try {
             Trenink.getEntityManager().remove(t);
             Trenink.getEntityManager().getTransaction().commit();
         } catch (Exception e) {
+             MessageDialog.show(e.getMessage());
             Trenink.getEntityManager().getTransaction().rollback();
-        }
+        }        
     }
     
     private Stage stage;
@@ -199,9 +200,15 @@ public class ExerciseTypesDialog {
         
         @Override
         public void handle(ActionEvent event) {
-            if (MessageDialog.showYesNoQuestion("Opravdu si přejete smazat tento druh cviku?")) {
-                deleteExerciseType();
-                reloadData();
+            ExerciseType t = typesTable.getSelectionModel().getSelectedItem();
+            List<Workout> workouts = t.getWorkouts();
+            if (workouts != null && !t.getWorkouts().isEmpty()) {
+                MessageDialog.show("Tento druh cviku jste cvičil nejméně v jednom z Vašich tréninků a nelze jej vymazat.");
+            } else {
+                if (MessageDialog.showYesNoQuestion("Opravdu si přejete smazat tento druh cviku?")) {
+                    deleteExerciseType();
+                    reloadData();
+                }
             }
         }
 

@@ -39,8 +39,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- *
- * @author karel
+ * Controller for main application window.
+ * 
+ * Linked to MainWindow.fxml
  */
 public class MainWindowController implements Initializable {
     
@@ -161,6 +162,18 @@ public class MainWindowController implements Initializable {
     }
     
     /**
+     * Latest workout.
+     * @return The most recent workout.
+     */
+    public Workout getLatestWorkout() {
+        if (workouts.isEmpty()) {
+            return null;
+        } else {
+            return workouts.get(0);
+        }
+    }
+    
+    /**
      * Add new workout to a list and select it.
      * @param w 
      */
@@ -218,16 +231,28 @@ public class MainWindowController implements Initializable {
         );
         
         if (d.isPresent()) {
-            Workout w = new Workout(d.get());
-            // TO DO - copy latest workout exercises
-            Trenink.getEntityManager().getTransaction().begin();
-            try {            
+            Trenink.getEntityManager().getTransaction().begin();                
+            try {                          
+                Workout w = new Workout(d.get());
                 Trenink.getEntityManager().persist(w);
+                Workout lastWorkout = getLatestWorkout();
+                if (lastWorkout != null) {
+                    lastWorkout.getExercises().forEach((oldExercise) -> {
+                        Exercise newExercise = new Exercise();
+                        newExercise.setExerciseType(oldExercise.getExerciseType());
+                        newExercise.setRepetitions(oldExercise.getRepetitions());
+                        newExercise.setSeries(oldExercise.getSeries());
+                        newExercise.setWeight(oldExercise.getWeight());  
+                        newExercise.setWorkout(w);
+                        w.getExercises().add(newExercise);
+                        Trenink.getEntityManager().persist(newExercise);
+                    });
+                }                        
                 Trenink.getEntityManager().getTransaction().commit();
                 addWorkoutAndSelect(w);
             } catch (Exception e) {
-                Trenink.getEntityManager().getTransaction().rollback();
                 MessageDialog.show(e.getMessage());
+                Trenink.getEntityManager().getTransaction().rollback();                
             }
         }
     }
@@ -269,12 +294,12 @@ public class MainWindowController implements Initializable {
             if (MessageDialog.showYesNoQuestion("Opravdu si přejete smazat tento trénink?")) {                                
                 Trenink.getEntityManager().getTransaction().begin();
                 try {            
-                    Trenink.getEntityManager().remove(w);
-                    Trenink.getEntityManager().getTransaction().commit();
                     workouts.remove(w);
+                    Trenink.getEntityManager().remove(w);
+                    Trenink.getEntityManager().getTransaction().commit();                   
                 } catch (Exception e) {
-                    Trenink.getEntityManager().getTransaction().rollback();
                     MessageDialog.show(e.getMessage());
+                    Trenink.getEntityManager().getTransaction().rollback();                    
                 }
             }
         }

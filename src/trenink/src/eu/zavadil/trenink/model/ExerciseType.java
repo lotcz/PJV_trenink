@@ -6,10 +6,15 @@
 package eu.zavadil.trenink.model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 /**
@@ -42,6 +47,21 @@ public class ExerciseType implements Serializable {
 
     public void setName(String s) {
         this.name = s;
+    }
+    
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+      name="exercise",
+      joinColumns=@JoinColumn(name="type", referencedColumnName="id"),
+      inverseJoinColumns=@JoinColumn(name="workout", referencedColumnName="id"))
+    private List<Workout> workouts;
+    
+    public List<Workout> getWorkouts() {
+        return this.workouts;
+    }
+
+    public void setWorkouts(List<Workout> w) {
+        this.workouts = w;
     }
     
     @Override
