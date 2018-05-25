@@ -6,3 +6,4 @@
 /src/trenink/${dist.jar.dir}/config
 ${dist.jar.dir}
 /src/trenink/config/db.cfg
+/src/TreninkovyDenik/target/
