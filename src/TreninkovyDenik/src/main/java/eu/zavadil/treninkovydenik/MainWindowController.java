@@ -492,7 +492,7 @@ public class MainWindowController implements Initializable {
     
     @FXML
     private void handleAboutButtonAction(ActionEvent event)  throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("AboutDialogWindow.fxml"));        
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/AboutDialogWindow.fxml"));        
         Scene scene = new Scene(root);
         Stage stage = new Stage();        
         stage.setScene(scene);        
