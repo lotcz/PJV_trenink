@@ -1,9 +1,7 @@
+/doc/*.odt#
 /src/trenink/nbproject/private/
 /src/trenink/build/
 /src/trenink/dist/
-/src/mavenproject1/target/
-/doc/*.odt#
-/src/trenink/${dist.jar.dir}/config
-${dist.jar.dir}
 /src/trenink/config/db.cfg
 /src/TreninkovyDenik/target/
+/src/TreninkovyDenik/src/main/resources/config/db.cfg
