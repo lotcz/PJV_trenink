@@ -1,5 +1,0 @@
-hibernate.cache.provider_class=org.hibernate.cache.NoCacheProvider
-javax.persistence.jdbc.driver=org.postgresql.Driver
-javax.persistence.jdbc.url=jdbc:postgresql://ubuntu-server.loc:5432/kettlebell
-javax.persistence.jdbc.user=postgres
-javax.persistence.jdbc.password=password
